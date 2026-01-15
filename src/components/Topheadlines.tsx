@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react"
 import type { Apiresponse, News } from "../data/news"
 
-export default function Topheading() {
+
+
+export default function Topheadlines() {
   const [news, setNews] = useState<News[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -9,9 +11,11 @@ export default function Topheading() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
+        setLoading(true)
+        setError(null)
         const response = await fetch(
           `https://api.allorigins.win/raw?url=${encodeURIComponent(
-            `https://newsapi.org/v2/top-headlines?country=us&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
+            `https://newsapi.org/v2/top-headlines?country=us&category=entertainment&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
           )}`
         )
 
@@ -34,7 +38,7 @@ export default function Topheading() {
 
   return (
     <div>
-      <h2>Top Headlines</h2>
+      <h2>Top Headlines of US</h2>
 
       {news.map((article, index) => (
         <div key={index}>

@@ -3,20 +3,22 @@ import type {Article, Apiresponse} from '../data/everything'
 
 type Everythingprops={
     query:string;
+    sortby:string;
 }
 
-export default function Everything({query}:Everythingprops){
+export default function Everything({query,sortby}:Everythingprops){
     const[article, setArticles] = useState<Article[]>([])
     const[error, setError] = useState<string | null>(null)
     const[loading, setLoading] = useState<boolean>(true)
 
     useEffect(()=>{
         if(!query) return
+        if(!sortby) return
         const fetchnews = async ()=>{
         try{
             const response = await fetch(
                 `https://api.allorigins.win/raw?url=${encodeURIComponent(
-            `https://newsapi.org/v2/everything?q=${query}&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
+            `https://newsapi.org/v2/everything?q=${query}&sortBy=${sortby}&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
           )}`
             )
             if(!response.ok){
@@ -31,7 +33,7 @@ export default function Everything({query}:Everythingprops){
         }
     }
         fetchnews()
-},[query])
+},[query,sortby])
   if (loading) return <p>Loading news...</p>
   if (error) return <p>Error: {error}</p>
     return(
