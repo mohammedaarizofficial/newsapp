@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import type { Apiresponse, News } from "../data/news"
 
-export default function Apicall() {
+export default function Topheading() {
   const [news, setNews] = useState<News[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)

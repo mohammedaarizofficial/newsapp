@@ -1,17 +1,22 @@
 import {useState, useEffect} from 'react'
 import type {Article, Apiresponse} from '../data/everything'
 
-export default function Everything(){
+type Everythingprops={
+    query:string;
+}
+
+export default function Everything({query}:Everythingprops){
     const[article, setArticles] = useState<Article[]>([])
     const[error, setError] = useState<string | null>(null)
     const[loading, setLoading] = useState<boolean>(true)
 
     useEffect(()=>{
+        if(!query) return
         const fetchnews = async ()=>{
         try{
             const response = await fetch(
                 `https://api.allorigins.win/raw?url=${encodeURIComponent(
-            `https://newsapi.org/v2/everything?q=bitcoin&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
+            `https://newsapi.org/v2/everything?q=${query}&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
           )}`
             )
             if(!response.ok){
@@ -26,13 +31,13 @@ export default function Everything(){
         }
     }
         fetchnews()
-},[])
+},[query])
   if (loading) return <p>Loading news...</p>
   if (error) return <p>Error: {error}</p>
     return(
         <>
         <div className="card">
-            <h2>Bitcoin</h2>
+            <h2>{query}</h2>
 
             {article.map((articles,index)=>(
                 <div key={index}>

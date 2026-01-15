@@ -1,4 +1,19 @@
-export default function Navbar(){
+import {useState} from "react";
+
+type Navbarprops={
+    onSearch:(value:string)=>void
+}
+
+export default function Navbar({onSearch}:Navbarprops){
+    const[searchText, setSearchText]=useState<string>('')
+
+    const handleSubmit = (e:React.FormEvent)=>{
+        e.preventDefault();
+        if(searchText.trim()){
+            onSearch(searchText);
+        }    
+    }
+
 
     return(
         <header className="p-3 mb-3 border-bottom">
@@ -13,8 +28,8 @@ export default function Navbar(){
                 <li><a href="#" className="nav-link px-2 link-body-emphasis">Top Headings</a></li>
                 <li><a href="#" className="nav-link px-2 link-body-emphasis">Everything</a></li>
             </ul>
-            <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                <input type="search" className="form-control" placeholder="Search..." aria-label="Search" />
+            <form onSubmit={handleSubmit} className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="search" className="form-control" placeholder="Search..." aria-label="Search" value={searchText} onChange={(e)=>setSearchText(e.target.value)}/>
             </form>
             <div className="dropdown text-end">
                 <a

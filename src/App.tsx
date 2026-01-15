@@ -1,16 +1,18 @@
-
+import {useState} from 'react'
 import './App.css'
-// import Apicall from './components/Apicall'
+// import Topheading from './components/Topheading'
 import Everything from './components/Everything'
 import Navbar from './components/Navbar'
 
 function App() {
-
+  const[query, setQuery] = useState<string>('bitcoin')
+  
 
   return (
     <>
-    <Navbar/>
-    <Everything/>
+    <Navbar onSearch={setQuery}/>
+    {/* <Topheading/> */}
+    <Everything query={query}/>
     </>
   )
 }
