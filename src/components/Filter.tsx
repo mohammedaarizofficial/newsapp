@@ -27,7 +27,7 @@ export default function Filter({onFilterChange}:Filterprops){
             name="listGroupRadios"
             id="listGroupRadios1"
            checked={filterby==='business'}
-            onClick={()=>handleFilter('business')}
+            onChange={()=>handleFilter('business')}
         />
         <span>
             Business
@@ -40,7 +40,7 @@ export default function Filter({onFilterChange}:Filterprops){
             name="listGroupRadios"
             id="listGroupRadios2"
             checked={filterby==='entertainment'}
-            onClick={()=>handleFilter('entertainment')}
+            onChange={()=>handleFilter('entertainment')}
         />
         <span>
             Entertainment
@@ -53,7 +53,7 @@ export default function Filter({onFilterChange}:Filterprops){
             name="listGroupRadios"
             id="listGroupRadios3"
             checked={filterby==='general'}
-            onClick={()=>handleFilter('general')}
+            onChange={()=>handleFilter('general')}
         />
         <span>
             General
@@ -66,7 +66,7 @@ export default function Filter({onFilterChange}:Filterprops){
             name="listGroupRadios"
             id="listGroupRadios3"
             checked={filterby==='health'}
-            onClick={()=>handleFilter('health')}
+            onChange={()=>handleFilter('health')}
         />
         <span>
             Health
@@ -79,7 +79,7 @@ export default function Filter({onFilterChange}:Filterprops){
             name="listGroupRadios"
             id="listGroupRadios3"
             checked={filterby==='science'}
-            onClick={()=>handleFilter('science')}
+            onChange={()=>handleFilter('science')}
         />
         <span>
             Science
@@ -92,7 +92,7 @@ export default function Filter({onFilterChange}:Filterprops){
             name="listGroupRadios"
             id="listGroupRadios3"
             checked={filterby==='sports'}
-            onClick={()=>handleFilter('sports')}
+            onChange={()=>handleFilter('sports')}
         />
         <span>
             Sports

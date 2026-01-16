@@ -16,20 +16,24 @@ function App() {
   const location = useLocation();
 
   return (
-    <>
-    <Navbar onSearch={setQuery}/>
-    
-    { /*Conditional rendering of filter component only for the everything page*/ }
-    {location.pathname==="/everything"?<Sortby onSortChange={setSortBy}/>:null}
+    <div className="app">
+  <Navbar onSearch={setQuery} />
 
-    {location.pathname==="/"?<Filter onFilterChange={setFilterBy}/>:null}
+  <main className="container news-layout">
+    {location.pathname === "/everything"?<Sortby onSortChange={setSortBy}/> : <Filter onFilterChange={setFilterBy}/>}
 
     <Routes>
-      <Route path="/" element={<Topheadlines filterby={filterby}/>}/>
-      <Route path='/everything' element={<Everything query={query} sortby={sortby}/>}/>
+      <Route path="/" element={<Topheadlines filterby={filterby}/>} />
+      <Route
+        path="/everything"
+        element={<Everything query={query} sortby={sortby} />}
+      />
     </Routes>
-    <Footer/>
-    </>
+  </main>
+
+  <Footer />
+</div>
+
   )
 }
 

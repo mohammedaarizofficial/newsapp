@@ -39,17 +39,24 @@ export default function Topheadlines({filterby}:Topheadlinesprops) {
   if (error) return <p>Error: {error}</p>
 
   return (
-    <div>
-      <h2>Top Headlines of US</h2>
+    <div className="news-grid">
+  {news.map((a, index) => (
+    <article className="news-card" key={index}>
+      {a.urlToImage && (
+        <img src={a.urlToImage} alt={a.title} />
+      )}
 
-      {news.map((article, index) => (
-        <div key={index}>
-          <h3>{article.title}</h3>
-          {article.urlToImage && <img src={article.urlToImage} width={300} />}
-          <p>{article.description}</p>
-          <a href={article.url} target="_blank">Read more</a>
-        </div>
-      ))}
-    </div>
+      <div className="news-content">
+        <h3>{a.title}</h3>
+        <p className="news-meta">{a.author}</p>
+        <p className="news-desc">{a.description}</p>
+
+        <a href={a.url} target="_blank" className="read-more">
+          Read more →
+        </a>
+      </div>
+    </article>
+  ))}
+</div>
   )
 }

@@ -40,3 +40,97 @@
 .read-the-docs {
   color: #888;
 }
+
+/* -------- GLOBAL -------- */
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+a {
+  text-decoration: none;
+}
+
+main.news-layout {
+  padding-top: 1.5rem;
+  min-height: 80vh;
+}
+
+/* -------- NAVBAR -------- */
+header.navbar {
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* -------- TOOLBAR -------- */
+.toolbar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* -------- NEWS GRID -------- */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+/* -------- NEWS CARD -------- */
+.news-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+}
+
+.news-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+/* -------- CONTENT -------- */
+.news-content {
+  padding: 1rem;
+}
+
+.news-content h3 {
+  font-size: 1.05rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.news-meta {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.news-desc {
+  font-size: 0.9rem;
+  color: #495057;
+  margin-bottom: 0.75rem;
+}
+
+.read-more {
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+/* -------- FOOTER -------- */
+footer {
+  background: #ffffff;
+  margin-top: 3rem;
+}
+
