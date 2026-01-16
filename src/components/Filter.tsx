@@ -1,31 +1,108 @@
 import { useState } from "react"
 
 type Filterprops={
-    onSortChange:(sortby:string)=>void;
+    onFilterChange:(filterby:string)=>void;
 }
 
-export default function Filter({onSortChange}:Filterprops){
-    const[sortby, setSortBy] = useState<string>('popularity');
+export default function Filter({onFilterChange}:Filterprops){
+    const[filterby, setFilterBy] = useState<string>('general');
 
-    const handleSort=(value:string)=>{
-        setSortBy(value);
-        onSortChange(value);
+    const handleFilter=(value:string)=>{
+        setFilterBy(value);
+        onFilterChange(value);
     }
 
     return(
         <>
-        <div className="dropdown text-end mb-5">
+        <div className="dropdown text-start mb-5">
             <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Sort By:{
-                    sortby ==='publishedAt'?'Latest':sortby
-                }
+                Categories:{filterby}
             </button>
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <button className="dropdown-item" onClick={()=>handleSort('popularity')}>Popularity</button>
-                <button className="dropdown-item" onClick={()=>handleSort('relevancy')}>Relevancy</button>
-                <button className="dropdown-item" onClick={()=>handleSort('publishedAt')}>Latest</button>
+                <div className="list-group">
+    <label className="list-group-item d-flex gap-2">
+        <input
+            className="form-check-input flex-shrink-0"
+            type="radio"
+            name="listGroupRadios"
+            id="listGroupRadios1"
+           checked={filterby==='business'}
+            onClick={()=>handleFilter('business')}
+        />
+        <span>
+            Business
+        </span>
+    </label>
+    <label className="list-group-item d-flex gap-2">
+        <input
+            className="form-check-input flex-shrink-0"
+            type="radio"
+            name="listGroupRadios"
+            id="listGroupRadios2"
+            checked={filterby==='entertainment'}
+            onClick={()=>handleFilter('entertainment')}
+        />
+        <span>
+            Entertainment
+        </span>
+    </label>
+    <label className="list-group-item d-flex gap-2">
+        <input
+            className="form-check-input flex-shrink-0"
+            type="radio"
+            name="listGroupRadios"
+            id="listGroupRadios3"
+            checked={filterby==='general'}
+            onClick={()=>handleFilter('general')}
+        />
+        <span>
+            General
+        </span>
+    </label>
+    <label className="list-group-item d-flex gap-2">
+        <input
+            className="form-check-input flex-shrink-0"
+            type="radio"
+            name="listGroupRadios"
+            id="listGroupRadios3"
+            checked={filterby==='health'}
+            onClick={()=>handleFilter('health')}
+        />
+        <span>
+            Health
+        </span>
+    </label>
+    <label className="list-group-item d-flex gap-2">
+        <input
+            className="form-check-input flex-shrink-0"
+            type="radio"
+            name="listGroupRadios"
+            id="listGroupRadios3"
+            checked={filterby==='science'}
+            onClick={()=>handleFilter('science')}
+        />
+        <span>
+            Science
+        </span>
+    </label>
+    <label className="list-group-item d-flex gap-2">
+        <input
+            className="form-check-input flex-shrink-0"
+            type="radio"
+            name="listGroupRadios"
+            id="listGroupRadios3"
+            checked={filterby==='sports'}
+            onClick={()=>handleFilter('sports')}
+        />
+        <span>
+            Sports
+        </span>
+    </label>
+</div>
+
             </div>
         </div>
+        
         </>
     )
 }

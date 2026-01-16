@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react"
 import type { Apiresponse, News } from "../data/news"
 
+type Topheadlinesprops={
+    filterby:string;
+}
 
-
-export default function Topheadlines() {
+export default function Topheadlines({filterby}:Topheadlinesprops) {
   const [news, setNews] = useState<News[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -15,7 +17,7 @@ export default function Topheadlines() {
         setError(null)
         const response = await fetch(
           `https://api.allorigins.win/raw?url=${encodeURIComponent(
-            `https://newsapi.org/v2/top-headlines?country=us&category=entertainment&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
+            `https://newsapi.org/v2/top-headlines?country=us&category=${filterby}&apiKey=${import.meta.env.VITE_NEWS_API_KEY}`
           )}`
         )
 
@@ -31,7 +33,7 @@ export default function Topheadlines() {
     }
 
     fetchNews()
-  }, [])
+  }, [filterby])
 
   if (loading) return <p>Loading news...</p>
   if (error) return <p>Error: {error}</p>

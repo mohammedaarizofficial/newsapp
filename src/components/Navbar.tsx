@@ -1,4 +1,5 @@
 import { useState} from "react"
+import {NavLink} from "react-router-dom"
 
 type Navbarprops = {
   onSearch: (value: string) => void
@@ -30,11 +31,11 @@ export default function Navbar({ onSearch}: Navbarprops) {
           <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
 
             <li>
-              <a href="#" className="nav-link px-2">Top Headings</a>
+              <NavLink to="/" className="nav-link px-2">Top Headlines</NavLink>
             </li>
 
             <li>
-              <a href="#" className="nav-link px-2">Everything</a>
+              <NavLink to="/everything" className="nav-link px-2">Everything</NavLink>
             </li>
           </ul>
 
