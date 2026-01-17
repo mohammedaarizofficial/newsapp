@@ -37,25 +37,27 @@ export default function Everything({query,sortby}:Everythingprops){
   if (loading) return <p>Loading news...</p>
   if (error) return <p>Error: {error}</p>
     return(
+    <>
+      <h1 className="news-title">Everything USA</h1>
         <div className="news-grid">
-  {article.map((a, index) => (
-    <article className="news-card" key={index}>
-      {a.urlToImage && (
-        <img src={a.urlToImage} alt={a.title} />
-      )}
+          {article.map((a, index) => (
+            <article className="news-card" key={index}>
+              {a.urlToImage && (
+                <img src={a.urlToImage} alt={a.title} />
+              )}
 
-      <div className="news-content">
-        <h3>{a.title}</h3>
-        <p className="news-meta">{a.author}</p>
-        <p className="news-desc">{a.description}</p>
+              <div className="news-content">
+                <h3>{a.title}</h3>
+                <p className="news-meta">{a.author}</p>
+                <p className="news-desc">{a.description}</p>
 
-        <a href={a.url} target="_blank" className="read-more">
-          Read more →
-        </a>
-      </div>
-    </article>
-  ))}
-</div>
-
+                <a href={a.url} target="_blank" className="read-more">
+                  Read more →
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+    </>
     )
 }

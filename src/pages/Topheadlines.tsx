@@ -38,8 +38,11 @@ export default function Topheadlines({filterby}:Topheadlinesprops) {
   if (loading) return <p>Loading news...</p>
   if (error) return <p>Error: {error}</p>
 
-  return (
+  return (<>
+
+    <h1 className="news-title">Top Headlines</h1>
     <div className="news-grid">
+      
   {news.map((a, index) => (
     <article className="news-card" key={index}>
       {a.urlToImage && (
@@ -58,5 +61,6 @@ export default function Topheadlines({filterby}:Topheadlinesprops) {
     </article>
   ))}
 </div>
+  </>
   )
 }
