@@ -1,82 +1,35 @@
-import { useState} from "react"
-import {NavLink} from "react-router-dom"
+import { Newspaper } from "lucide-react";
 
-type Navbarprops = {
-  onSearch: (value: string) => void
-}
-
-export default function Navbar({ onSearch}: Navbarprops) {
-  const [searchText, setSearchText] = useState<string>("")
-    
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (searchText.trim()) {
-      onSearch(searchText)
-    }
-  }
-
-
+export default function Navbar(){
   return (
-    <header className="p-3 mb-3 border-bottom navbar">
-      <div className="container">
-        <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-
-          <a href="/" className="d-flex align-items-center mb-2 mb-lg-0 text-decoration-none">
-            <svg className="bi me-2" width="40" height="32">
-              <use href="#bootstrap" />
-            </svg>
-          </a>
-
-          <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-
-            <li>
-              <NavLink to="/" className="nav-link px-2">Top Headlines</NavLink>
-            </li>
-
-            <li>
-              <NavLink to="/everything" className="nav-link px-2">Everything</NavLink>
-            </li>
-          </ul>
-
-          {/* 🔍 SEARCH (UNCHANGED LOGIC) */}
-          <form onSubmit={handleSubmit} className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-            <input
-              type="search"
-              className="form-control"
-              placeholder="Search..."
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            />
-          </form>
-
-          {/* 👤 PROFILE DROPDOWN */}
-          <div className="dropdown text-end">
-            <a
-              href="#"
-              className="d-block text-decoration-none dropdown-toggle"
-              data-bs-toggle="dropdown"
-            >
-              <img
-                src="https://github.com/mdo.png"
-                alt="mdo"
-                width="32"
-                height="32"
-                className="rounded-circle"
-              />
-            </a>
-
-            <ul className="dropdown-menu text-small">
-              <li><a className="dropdown-item" href="#">New project...</a></li>
-              <li><a className="dropdown-item" href="#">Settings</a></li>
-              <li><a className="dropdown-item" href="#">Profile</a></li>
-              <li><hr className="dropdown-divider" /></li>
-              <li><a className="dropdown-item" href="#">Sign out</a></li>
-            </ul>
+    <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent">
+            <Newspaper className="h-5 w-5 text-accent-foreground" />
           </div>
+          <div>
+            <h1 className="font-display text-xl font-bold tracking-tight">
+              The Daily<span className="text-accent">.</span>
+            </h1>
+            <p className="text-[10px] uppercase tracking-widest text-muted-foreground">
+              News Reimagined
+            </p>
+          </div>
+        </div>
 
+        <div className="flex items-center gap-2">
+          <span className="hidden text-sm text-muted-foreground sm:block">
+            {new Date().toLocaleDateString("en-US", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </span>
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
+
