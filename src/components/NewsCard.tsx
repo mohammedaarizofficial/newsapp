@@ -30,13 +30,13 @@ export const NewsCard = ({
         featured ? "md:col-span-2 md:row-span-2" : ""
       }`}
     >
-      <div className={`relative overflow-hidden ${featured ? "h-64 md:h-80" : "h-48"}`}>
+      <div className={`relative overflow-hidden  h-64 md:h-80 `}>
         <img
           src={image}
           alt={title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-foreground/60 via-transparent to-transparent" />
         
         {category && (
           <span className="absolute left-4 top-4 rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
@@ -46,9 +46,7 @@ export const NewsCard = ({
         
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <h3
-            className={`font-display font-semibold leading-tight text-primary-foreground ${
-              featured ? "text-2xl md:text-3xl" : "text-lg"
-            }`}
+            className={`font-display font-semibold leading-tight text-white text-1xl `}
           >
             {title}
           </h3>

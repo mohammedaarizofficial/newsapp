@@ -64,7 +64,7 @@ export const mockTopHeadlines: NewsArticle[] = [
     id: "6",
     title: "Historic Championship Match Breaks Viewership Records",
     description: "The thrilling final attracted the largest global television audience in sports history, with an estimated 1.5 billion viewers tuning in.",
-    image: "https://images.unsplash.com/photo-1461896836934- voices-of-the-wind?w=800&q=80",
+    image: "https://unsplash.com/photos/man-sitting-on-rock-surrounded-by-water--Q_t4SCN8c4",
     source: "Sports Network",
     date: "10 hours ago",
     url: "#",
