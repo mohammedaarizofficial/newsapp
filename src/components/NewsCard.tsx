@@ -21,6 +21,7 @@ export const NewsCard = ({
   category,
   featured = false,
 }: NewsCardProps) => {
+  console.log(category);
   return (
     <a
       href={url}
@@ -37,12 +38,6 @@ export const NewsCard = ({
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-linear-to-t from-foreground/60 via-transparent to-transparent" />
-        
-        {category && (
-          <span className="absolute left-4 top-4 rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
-            {category}
-          </span>
-        )}
         
         <div className="absolute bottom-0 left-0 right-0 p-4">
           <h3

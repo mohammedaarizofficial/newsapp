@@ -6,6 +6,7 @@ import Topheadlines from "./pages/Topheadlines";
 import Everything from "./pages/Everything";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Flame, Globe } from "lucide-react";
+import Footer from '@/components/Footer'
 
 const App = () => {
   const [activeTab, setActiveTab] =
@@ -76,6 +77,7 @@ const App = () => {
           </TabsContent>
         </Tabs>
       </main>
+      <Footer />
     </div>
   );
 };
