@@ -8,7 +8,7 @@ export default function Topheadlines({ filterby }: { filterby: string }) {
 
   useEffect(() => {
     try{
-      fetch('http://localhost:3000/news')
+      fetch('http://localhost:3000/news/topheadlines')
       .then((res)=>(res.json()))
       .then((data)=>{
         setNews(data);
@@ -20,21 +20,10 @@ export default function Topheadlines({ filterby }: { filterby: string }) {
     }
   },[]);
 
-
-
-  //     const data: Apiresponse = await res.json();
-  //     console.log("RAW API RESPONSE:", data);
-  //     setNews(data.articles);
-  //     setLoading(false);
-  //   };
-
-  //   fetchNews();
-  // }, [filterby]);
-
   const articles = news.map((a) => ({
     id: a.url,
     title: a.title,
-    description: a.description,
+    description: a.description ?? "No description available",
     image: a.image,
     source: a.source.name,
     date: new Date(a.date).toLocaleDateString(),

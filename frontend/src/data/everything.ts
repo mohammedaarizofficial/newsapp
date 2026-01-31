@@ -7,8 +7,8 @@ export interface Article{
     title: string,
     description: string,
     url: string,
-    urlToImage: string,
-    publishedAt: string,
+    image: string,
+    date: string,
     content: string
 }
 

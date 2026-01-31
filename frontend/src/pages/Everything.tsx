@@ -1,58 +1,45 @@
 import { useEffect, useState } from "react";
 import { NewsGrid } from "@/components/NewsGrid";
-import type { Article, Apiresponse } from "@/data/everything";
+import type { Article, } from "@/data/everything";
 
-type EverythingProps = {
-  sortby: string;
-};
 
-export default function Everything({ sortby }: EverythingProps) {
+export default function Everything( ) {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchNews = async () => {
-      setLoading(true);
-      setError(null);
+    const fetchEverything = async ()=>{
 
-      try {
-        const response = await fetch(
-          `https://api.allorigins.win/raw?url=${encodeURIComponent(
-            `https://newsapi.org/v2/everything?q=bitcoin&sortBy=${sortby}&apiKey=${
-              import.meta.env.VITE_NEWS_API_KEY
-            }`
-          )}`
-        );
+      try{
+        const response = await fetch('http://localhost:3000/news/everything');
 
-        if (!response.ok) {
-          throw new Error(`HTTP error ${response.status}`);
+        if(!response.ok){
+          throw new Error('Unable to fetch news!');
         }
 
-        const data: Apiresponse = await response.json();
-        console.log("RAW API RESPONSE:", data);
-
-        setArticles(data.articles);
-      } catch (err) {
-        console.error("Fetch failed:", err);
-        setError("Live news cannot be loaded due to API restrictions.");
-        setArticles([]);
-      } finally {
+        const data = await response.json();
+        setArticles(data);
+      }catch(error){
+        console.log(error);
+        setError("Failed to fetch news!");
+      }finally{
         setLoading(false);
       }
-    };
+   
+    }
+    fetchEverything();
+  }, []);
 
-    fetchNews();
-  }, [sortby]);
 
   // Transform API articles → UI articles
   const uiArticles = articles.map((a) => ({
     id: a.url,
     title: a.title,
-    description: a.description,
-    image: a.urlToImage,
+    description: a.description ?? "No description available",
+    image: a.image,
     source: a.source.name,
-    date: new Date(a.publishedAt).toLocaleDateString(),
+    date: new Date(a.date).toLocaleDateString(),
     url: a.url,
   }));
 
