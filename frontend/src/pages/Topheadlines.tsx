@@ -6,6 +6,7 @@ export default function Topheadlines({filterby}:{filterby:string}) {
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     try{
       fetch(`http://localhost:3000/news/topheadlines?q=${filterby}`)
@@ -14,6 +15,7 @@ export default function Topheadlines({filterby}:{filterby:string}) {
         setNews(data);
         setLoading(false);
       })
+
     }catch(error){
       console.log(error);
     }

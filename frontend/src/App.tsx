@@ -10,7 +10,7 @@ import { Flame, Globe,Search } from "lucide-react";
 import Footer from '@/components/Footer'
 
 const App = () => {
-  const [activeTab, setActiveTab] =useState<"headlines" | "everything">("headlines");
+  const [activeTab, setActiveTab] =useState<"headlines" | "everything">("everything");
 
   const [selectedCategory, setSelectedCategory] = useState<string>("general");
   const [sortBy, setSortBy] = useState("relevancy");
