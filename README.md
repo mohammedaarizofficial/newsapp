@@ -1,4 +1,4 @@
-# 📰 Everyday Paper — Full-Stack News Web App
+# 📰 The Daily. — Full-Stack News Web App
 
 🔗 **Live UI (Frontend + Backend):**  
 👉 https://newsapp-eijme2vt4-mohammedaarizofficials-projects.vercel.app
@@ -7,7 +7,7 @@
 
 ## 📌 Project Overview
 
-**Everyday Paper** is a responsive, full-stack news web application built using **React + TypeScript** with a **Node.js + Express backend**.
+**The Daily.** is a responsive, full-stack news web application built using **React + TypeScript** with a **Node.js + Express backend**.
 
 The application allows users to explore real-time news from across the world with features such as keyword search, category filtering, sorting, and country-based top headlines — all wrapped in a clean, readable UI inspired by modern news platforms.
 
