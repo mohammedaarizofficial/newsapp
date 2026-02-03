@@ -1,28 +1,27 @@
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { SortDropdown } from "@/components/SortDropDown";
 import Topheadlines from "./pages/Topheadlines";
 import Everything from "./pages/Everything";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Flame, Globe } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Flame, Globe,Search } from "lucide-react";
 import Footer from '@/components/Footer'
 
 const App = () => {
-  const [activeTab, setActiveTab] =
-  useState<"headlines" | "everything">("headlines");
+  const [activeTab, setActiveTab] =useState<"headlines" | "everything">("headlines");
 
-  const [selectedCategory, setSelectedCategory] = useState("general");
-  const [sortBy, setSortBy] = useState("publishedAt");
-  // const[query, setQuery] = useState<string>('bitcoin')
+  const [selectedCategory, setSelectedCategory] = useState<string>("general");
+  const [sortBy, setSortBy] = useState("relevancy");
+  const[searchQuery, setSearchQuery] = useState<string>('')
+  // const [enter, setEnter] = useState<boolean>(false)
 
-  useEffect(()=>{
-    fetch('http://localhost:3000/news')
-    .then((res)=>res.json())
-    .then((data)=>{
-      console.log("the data is :",data)
-    });
-  },[]);
+  // const Enter = (e)=>{
+  //   if(e.key=== 'Enter'){
+  //     setEnter(true);
+  //   } 
+  // }
 
   return (
     <div className="min-h-screen bg-background">
@@ -67,10 +66,23 @@ const App = () => {
               )}
 
               {activeTab === "everything" && (
-                <SortDropdown
-                  selected={sortBy}
-                  onSelect={setSortBy}
-                />
+                <>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      placeholder="Search topics..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      // onKeyDown={(e)=>Enter(e)}
+                      className="w-48 pl-9 sm:w-64"
+                    />
+                  </div>
+                  <SortDropdown
+                    selected={sortBy}
+                    onSelect={setSortBy}
+                  />
+                </>
               )}
             </div>
           </div>
@@ -81,7 +93,7 @@ const App = () => {
           </TabsContent>
 
           <TabsContent value="everything">
-            <Everything sortby={sortBy} />
+            <Everything sortby={sortBy} search={searchQuery}/>
           </TabsContent>
         </Tabs>
       </main>

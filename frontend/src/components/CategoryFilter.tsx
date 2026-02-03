@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 const categories = [
-  { value: "all", label: "All Categories" },
+  { value: "general", label: "All Categories" },
   { value: "business", label: "Business" },
   { value: "entertainment", label: "Entertainment" },
   { value: "health", label: "Health" },

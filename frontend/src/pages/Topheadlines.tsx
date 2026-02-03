@@ -2,23 +2,22 @@ import { useEffect, useState } from "react";
 import { NewsGrid } from "@/components/NewsGrid";
 import type {  News } from "@/data/news";
 
-export default function Topheadlines({ filterby }: { filterby: string }) {
+export default function Topheadlines({filterby}:{filterby:string}) {
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     try{
-      fetch('http://localhost:3000/news/topheadlines')
+      fetch(`http://localhost:3000/news/topheadlines?q=${filterby}`)
       .then((res)=>(res.json()))
       .then((data)=>{
         setNews(data);
         setLoading(false);
-        console.log(data);
       })
     }catch(error){
       console.log(error);
     }
-  },[]);
+  },[filterby]);
 
   const articles = news.map((a) => ({
     id: a.url,
