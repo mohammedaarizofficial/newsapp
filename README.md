@@ -1,7 +1,7 @@
 # 📰 The Daily. — Full-Stack News Web App
 
-🔗 **Live UI (Frontend + Backend):**  
-👉 https://newsapp-eijme2vt4-mohammedaarizofficials-projects.vercel.app
+🔗 **Live Application (Frontend + Backend):**  
+👉 https://newsapp-three-zeta.vercel.app
 
 ---
 
@@ -9,16 +9,16 @@
 
 **The Daily.** is a responsive, full-stack news web application built using **React + TypeScript** with a **Node.js + Express backend**.
 
-The application allows users to explore real-time news from across the world with features such as keyword search, category filtering, sorting, and country-based top headlines — all wrapped in a clean, readable UI inspired by modern news platforms.
+The app allows users to explore real-time news from across the world with features such as keyword search, category filtering, sorting, and country-based top headlines — all presented in a clean, modern UI inspired by professional news platforms.
 
-To overcome NewsAPI browser restrictions and improve security, the app now uses a **backend proxy layer** that securely communicates with external APIs and controls the data sent to the frontend.
+To overcome browser restrictions, improve security, and reduce unnecessary API usage, the application uses a **backend proxy layer with intelligent caching**, ensuring efficient and controlled access to external news APIs.
 
 ---
 
 ## 🚀 Live Preview
 
 👉 **Frontend + Backend (Vercel):**  
-https://newsapp-eijme2vt4-mohammedaarizofficials-projects.vercel.app
+https://newsapp-three-zeta.vercel.app
 
 ---
 
@@ -26,13 +26,14 @@ https://newsapp-eijme2vt4-mohammedaarizofficials-projects.vercel.app
 
 | Layer | Technology |
 |----|----|
-Frontend | React (Vite) + TypeScript |
-Backend | Node.js + Express |
-Routing | React Router DOM |
-UI Styling | Bootstrap 5 + Custom CSS |
-API Handling | Backend Proxy + Fetch API |
-State Management | React Hooks (useState, useEffect) |
-Deployment | Vercel (Frontend + Backend) |
+| Frontend | React (Vite) + TypeScript |
+| Backend | Node.js + Express |
+| Routing | React Router DOM |
+| UI Styling | Bootstrap 5 + Custom CSS + TailwindCSS |
+| API Handling | Backend Proxy + Fetch API |
+| State Management | React Hooks (useState, useEffect) |
+| Performance | In-memory caching |
+| Deployment | Vercel (Monorepo – Frontend + Backend) |
 
 ---
 
@@ -41,72 +42,112 @@ Deployment | Vercel (Frontend + Backend) |
 - 🔍 Search news by keyword  
 - 🌍 View top headlines by country  
 - 🗂 Filter news by category  
-- 📊 Sort results by popularity, relevancy, or date  
+- 📊 Sort results by popularity, relevancy, or publish date  
+- ⚡ Intelligent caching to reduce redundant API calls  
 - 🔐 Secure API handling via backend proxy  
-- 🔗 Client-side routing  
+- 🔗 Client-side routing with React Router  
 - 📱 Fully responsive design  
 
 ---
 
 ## ⚙️ How the App Works
 
-### Backend (New Architecture)
+### 🖥 Backend (Proxy + Cache Architecture)
 
 - A dedicated **Express backend** acts as a middle layer between the frontend and NewsAPI
-- API keys are stored securely in `.env` files and never exposed to the browser
-- Backend reshapes and filters data before sending it to the frontend
-- Prevents CORS issues and API abuse
+- API keys are stored securely using environment variables and are never exposed to the browser
+- The backend:
+  - Forwards requests to NewsAPI
+  - Normalizes and filters responses
+  - Caches results in memory to avoid duplicate API calls
+- This architecture:
+  - Prevents CORS issues
+  - Protects API keys
+  - Reduces NewsAPI quota usage
+  - Improves performance for repeat requests
 
-### Frontend
+---
 
-#### Search
-- Users enter a keyword in the navbar
+### ⚡ Backend Caching Strategy
+
+To avoid wasting limited NewsAPI requests:
+
+- Requests are cached using a **composite cache key**
+- Cache keys include:
+  - Search keyword
+  - Sort option
+  - Page context (e.g., top headlines vs everything)
+- Identical requests reuse cached responses instead of triggering new API calls
+
+Example cache behavior:
+- Searching `apple` with `publishedAt` → API call made once
+- Searching `apple` again with the same sort → served from cache
+- Changing sort option → new cache entry created
+
+This ensures:
+- Faster UI updates
+- Fewer unnecessary network requests
+- Better API quota management
+
+---
+
+### 🧩 Frontend Flow
+
+#### 🔍 Search
+- Users type a keyword in the navbar
 - Search state is lifted to `App.tsx`
-- Backend endpoint receives query parameters and fetches filtered news
+- Requests are sent to the backend only when necessary
 
-#### Top Headlines
+#### 📰 Top Headlines
 - Displays country-specific headlines
 - Frontend sends country code to backend
-- Backend calls NewsAPI `top-headlines` endpoint
+- Backend fetches data from NewsAPI `top-headlines`
 
-#### Everything Page
+#### 📄 Everything Page
 - Displays keyword-based results
 - Supports sorting and filtering
-- Backend controls final data shape
+- Backend controls final response shape
 
-#### Data Fetching
-- Frontend fetches data only from the backend
-- UI updates dynamically when search, filters, or sort options change
+#### 🔄 Data Fetching
+- Frontend communicates **only with the backend**
+- No direct external API calls from the browser
+- UI updates automatically when search, filters, or sorting change
 
 ---
 
 ## 🧪 Challenges & Learnings
 
-### 🚧 1. CORS & API Restrictions
+### 🚧 1. CORS & Browser API Restrictions
 - NewsAPI blocks direct browser requests
 - Learned why **backend proxies are essential** for production apps
-- Implemented secure server-side API handling
+- Implemented a secure server-side API layer
 
-### 🚧 2. Backend Error Handling
-- Backend crashes caused frontend to hang
-- Learned to always return structured error responses instead of crashing
-- Implemented defensive API checks
+### 🚧 2. Reducing Unnecessary API Calls
+- Faced strict API request limits
+- Implemented in-memory caching to reuse identical responses
+- Learned how caching keys must include all query-affecting parameters
 
-### 🚧 3. React Router Context Errors
+### 🚧 3. Backend Error Handling
+- Backend crashes caused frontend hangs
+- Learned to always return structured error responses
+- Added defensive checks for failed API calls
+
+### 🚧 4. React Router Context Issues
 - Encountered `useLocation()` errors due to missing Router context
-- Fixed by wrapping the app with `<BrowserRouter>`
+- Fixed by correctly wrapping the app in `<BrowserRouter>`
 
-### 🚧 4. State Management Complexity
+### 🚧 5. State Management Complexity
 - Coordinating search, filters, and sorting across pages
-- Solved by lifting state to `App.tsx`
+- Solved by lifting shared state to `App.tsx`
 
-### 🚧 5. Monorepo Deployment
-- Learned how to deploy a project with separate frontend and backend folders
-- Configured correct root directory and build commands for Vercel
+### 🚧 6. Monorepo Deployment on Vercel
+- Deployed frontend and backend from a single repository
+- Configured correct root directories and build commands
+- Learned production-ready deployment workflows
 
 ---
 
-## 📁 Folder Structure (Updated)
+## 📁 Folder Structure
 
 ```text
 newsapp/
