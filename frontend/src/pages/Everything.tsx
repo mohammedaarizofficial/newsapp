@@ -1,29 +1,39 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { NewsGrid } from "@/components/NewsGrid";
-import type { Article, } from "@/data/everything";
+import type { Article } from "@/data/everything";
 
 interface EverythingProps{
   sortby:string;
   search:string;
 }
 
-
 export default function Everything({sortby,search}:EverythingProps) {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const cache = useRef<Record<string, Article[]>>({});
+  const   DEFAULT_KEY = '__default__';
+
+  const query = search.trim() || DEFAULT_KEY;
 
   useEffect(() => {
     const fetchEverything = async ()=>{
 
+      if(cache.current[query]){
+        setArticles(cache.current[query]);
+        return;
+      }
+
       try{
-        const response = await fetch(`http://localhost:3000/news/everything?sort=${sortby}&search=${search}`);
+        const url = query ===   DEFAULT_KEY ? `http://localhost:3000/news/everything?sort=${sortby}` : `http://localhost:3000/news/everything?sort=${sortby}&search=${query}`;
+        const response = await fetch(url);
 
         if(!response.ok){
           throw new Error('Unable to fetch news!');
         }
 
         const data = await response.json();
+        cache.current[query]= data;
         setArticles(data);
       }catch(error){
         console.log(error);
@@ -34,8 +44,7 @@ export default function Everything({sortby,search}:EverythingProps) {
    
     }
     fetchEverything();
-  }, [sortby,search]);
-
+  }, [sortby,query]);
 
   // Transform API articles → UI articles
   const uiArticles = articles.map((a) => ({

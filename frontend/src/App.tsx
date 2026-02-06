@@ -11,7 +11,6 @@ import Footer from '@/components/Footer'
 
 const App = () => {
   const [activeTab, setActiveTab] =useState<"headlines" | "everything">("everything");
-
   const [selectedCategory, setSelectedCategory] = useState<string>("general");
   const [sortBy, setSortBy] = useState("relevancy");
   const[searchQuery, setSearchQuery] = useState<string>('');
@@ -70,6 +69,8 @@ const App = () => {
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={(e)=>{
                         if(e.key==='Enter'){
+                          console.log('The enter key is being pressed');
+                          console.log('the input is ', input);
                           setSearchQuery(input);
                         }
                       }}
