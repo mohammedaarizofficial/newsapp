@@ -5,7 +5,7 @@ const dotenv = require('dotenv')
 dotenv.config();
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
 
 app.use(cors())
@@ -59,6 +59,6 @@ app.get('/news/everything',async(req,res)=>{
     }
 });
 
-app.listen(port, ()=>{
-    console.log('Server is listening at port:'+port);
+app.listen(PORT, ()=>{
+    console.log('Server is listening at port:'+PORT);
 });
