@@ -12,21 +12,22 @@ export default function Everything({sortby,search}:EverythingProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const cache = useRef<Record<string, Article[]>>({});
-  const   DEFAULT_KEY = '__default__';
   const APIKEY = import.meta.env.VITE_API_BASE_URL;
+  const query = search.trim();
 
-  const query = search.trim() || DEFAULT_KEY;
+
+  const cachekey = `${sortby}::{${query}|| "__default__"}`;
 
   useEffect(() => {
     const fetchEverything = async ()=>{
 
-      if(cache.current[query]){
-        setArticles(cache.current[query]);
+      if(cache.current[cachekey]){
+        setArticles(cache.current[cachekey]);
         return;
       }
 
       try{
-        const url = query ===   DEFAULT_KEY ? `${APIKEY}/news/everything?sort=${sortby}` : `${APIKEY}/news/everything?sort=${sortby}&search=${query}`;
+        const url = `${APIKEY}/news/everything?sort=${sortby}&search=${query}`;
         const response = await fetch(url);
 
         if(!response.ok){
@@ -34,7 +35,7 @@ export default function Everything({sortby,search}:EverythingProps) {
         }
 
         const data = await response.json();
-        cache.current[query]= data;
+        cache.current[cachekey]= data;
         setArticles(data);
       }catch(error){
         console.log(error);
