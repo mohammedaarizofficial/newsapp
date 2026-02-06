@@ -14,14 +14,8 @@ const App = () => {
 
   const [selectedCategory, setSelectedCategory] = useState<string>("general");
   const [sortBy, setSortBy] = useState("relevancy");
-  const[searchQuery, setSearchQuery] = useState<string>('')
-  // const [enter, setEnter] = useState<boolean>(false)
-
-  // const Enter = (e)=>{
-  //   if(e.key=== 'Enter'){
-  //     setEnter(true);
-  //   } 
-  // }
+  const[searchQuery, setSearchQuery] = useState<string>('');
+  const [input, setInput] = useState('');
 
   return (
     <div className="min-h-screen bg-background">
@@ -72,9 +66,13 @@ const App = () => {
                     <Input
                       type="text"
                       placeholder="Search topics..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      // onKeyDown={(e)=>Enter(e)}
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      onKeyDown={(e)=>{
+                        if(e.key==='Enter'){
+                          setSearchQuery(input);
+                        }
+                      }}
                       className="w-48 pl-9 sm:w-64"
                     />
                   </div>
