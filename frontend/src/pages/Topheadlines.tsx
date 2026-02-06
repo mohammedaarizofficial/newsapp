@@ -5,11 +5,12 @@ import type {  News } from "@/data/news";
 export default function Topheadlines({filterby}:{filterby:string}) {
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
+  const APIKEY = import.meta.env.VITE_API_BASE_URL;
 
 
   useEffect(() => {
     try{
-      fetch(`http://localhost:3000/news/topheadlines?q=${filterby}`)
+      fetch(`${APIKEY}/news/topheadlines?q=${filterby}`)
       .then((res)=>(res.json()))
       .then((data)=>{
         setNews(data);

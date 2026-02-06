@@ -13,6 +13,7 @@ export default function Everything({sortby,search}:EverythingProps) {
   const [error, setError] = useState<string | null>(null);
   const cache = useRef<Record<string, Article[]>>({});
   const   DEFAULT_KEY = '__default__';
+  const APIKEY = import.meta.env.VITE_API_BASE_URL;
 
   const query = search.trim() || DEFAULT_KEY;
 
@@ -25,7 +26,7 @@ export default function Everything({sortby,search}:EverythingProps) {
       }
 
       try{
-        const url = query ===   DEFAULT_KEY ? `http://localhost:3000/news/everything?sort=${sortby}` : `http://localhost:3000/news/everything?sort=${sortby}&search=${query}`;
+        const url = query ===   DEFAULT_KEY ? `${APIKEY}/news/everything?sort=${sortby}` : `${APIKEY}/news/everything?sort=${sortby}&search=${query}`;
         const response = await fetch(url);
 
         if(!response.ok){
