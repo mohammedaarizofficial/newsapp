@@ -5,25 +5,41 @@ import type {  News } from "@/data/news";
 export default function Topheadlines({filterby}:{filterby:string}) {
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
-  const cache = useRef<Record<string, News[]>>({});
+  type CacheEntry<T> = {
+    data:T;
+    timestamp:number
+  }
+  const cache = useRef<Record<string, CacheEntry<News[]>>>({});
+  const cacheTime = 5 * 60 * 1000;
+
+  const isCacheValid = (entry:CacheEntry<News[]>)=>{
+    return Date.now() - entry.timestamp < cacheTime;
+  }
 
   useEffect(() => {
     const fetchTopHeadlines = async()=>{
       //Cache logic written here
-      if(cache.current[filterby]){
-        console.log('using cached data');
-        setNews(cache.current[filterby]);
+      const cached = cache.current[filterby];
+      if(cached && isCacheValid(cached)){
+        console.log("✅ CACHE HIT", {
+          filterby,
+          age: Date.now() - cached.timestamp,
+        });
+        setNews(cached.data);
         setLoading(false);
         return;
       }
 
       try{
-        console.log('Also Fetching the data and using unnecessary API');
+        console.log('Fetching data from api');
         const response = await fetch(`http://localhost:3000/news/topheadlines?q=${filterby}`)
         const data = await response.json();
         setNews(data);
         setLoading(false);
-        cache.current[filterby]= data;
+        cache.current[filterby] = {
+          data,
+          timestamp:Date.now()
+        }
       }catch(error){
         console.log(error);
       }
