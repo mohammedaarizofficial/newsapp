@@ -32,11 +32,11 @@ const App = () => {
         </div>
 
         <Tabs
-  value={activeTab}
-  onValueChange={(value) =>
-    setActiveTab(value as "headlines" | "everything")
-  }
->
+          value={activeTab}
+          onValueChange={(value) =>
+            setActiveTab(value as "headlines" | "everything")
+          }
+        >
           <div className="mb-6 flex flex-col items-center justify-between gap-4 sm:flex-row">
             <TabsList className="grid w-full max-w-md grid-cols-2">
               <TabsTrigger value="headlines" className="gap-2">
