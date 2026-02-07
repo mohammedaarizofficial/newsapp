@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { NewsGrid } from "@/components/NewsGrid";
 import type {  News } from "@/data/news";
 
@@ -8,18 +8,47 @@ export default function Topheadlines({filterby}:{filterby:string}) {
   const APIKEY = import.meta.env.VITE_API_BASE_URL;
 
 
+  type CacheEntry<T> = {
+    data:T;
+    timestamp:number
+  }
+  const cache = useRef<Record<string, CacheEntry<News[]>>>({});
+  const cacheTime = 5 * 60 * 1000;
+
+  const isCacheValid = (entry:CacheEntry<News[]>)=>{
+    return Date.now() - entry.timestamp < cacheTime;
+  }
+
   useEffect(() => {
-    try{
-      fetch(`${APIKEY}/news/topheadlines?q=${filterby}`)
-      .then((res)=>(res.json()))
-      .then((data)=>{
+    const fetchTopHeadlines = async()=>{
+      //Cache logic written here
+      const cached = cache.current[filterby];
+      if(cached && isCacheValid(cached)){
+        console.log("✅ CACHE HIT", {
+          filterby,
+          age: Date.now() - cached.timestamp,
+        });
+        setNews(cached.data);
+        setLoading(false);
+        return;
+      }
+
+      try{
+        console.log('Fetching data from api');
+        const response = await fetch(`${APIKEY}/news/topheadlines?q=${filterby}`)
+        const data = await response.json();
         setNews(data);
         setLoading(false);
-      })
+        cache.current[filterby] = {
+          data,
+          timestamp:Date.now()
+        }
+      }catch(error){
+        console.log(error);
+      }
 
-    }catch(error){
-      console.log(error);
     }
+    fetchTopHeadlines();
   },[filterby]);
 
   const articles = news.map((a) => ({
