@@ -5,19 +5,23 @@ import type { Article } from "@/data/everything";
 interface EverythingProps{
   sortby:string;
   search:string;
+  page:number;
+  setTotalPages:React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function Everything({sortby,search}:EverythingProps) {
+export default function Everything({sortby,search,page,setTotalPages}:EverythingProps) {
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [totalResults, setTotalResults] =useState<number>(0);
+
   type cacheEntry<T> = {
     data:T,
     timestamp:number
   }
   const cache = useRef<Record<string, cacheEntry<Article[]>>>({});
   const query = search.trim();
-  const cachekey = `${sortby}::{${query}|| "__default__"}`;
+  const cachekey = `${sortby}::${query}::${page}|| "__default__"}`;
   const cacheExpiry = 5 * 60 * 1000;
 
   const isCacheValid = (entry:cacheEntry<Article[]>)=>{
@@ -25,6 +29,7 @@ export default function Everything({sortby,search}:EverythingProps) {
   }
 
   useEffect(() => {
+    window.scrollTo(0,0);
     const fetchEverything = async ()=>{
       const cached = cache.current[cachekey];
       if(cached && isCacheValid(cached)){
@@ -35,7 +40,7 @@ export default function Everything({sortby,search}:EverythingProps) {
 
       try{
         console.log('the api is being fetched');
-        const url = `http://localhost:3000/news/everything?sort=${sortby}&search=${query}`;
+        const url = `http://localhost:3000/news/everything?page=${page}&sort=${sortby}&search=${query}`;
         const response = await fetch(url);
 
         if(!response.ok){
@@ -44,10 +49,13 @@ export default function Everything({sortby,search}:EverythingProps) {
 
         const data = await response.json();
         cache.current[cachekey]={
-          data,
+          data:data.articles,
           timestamp:Date.now()
         };
-        setArticles(data);
+        
+        setArticles(data.articles);
+        setTotalPages(data.totalPages);
+        setTotalResults(data.totalResults);
       }catch(error){
         console.log(error);
         setError("Failed to fetch news!");
@@ -57,7 +65,7 @@ export default function Everything({sortby,search}:EverythingProps) {
    
     }
     fetchEverything();
-  }, [sortby,query]);
+  }, [sortby,query,page]);
 
   // Transform API articles → UI articles
   const uiArticles = articles.map((a) => ({
@@ -77,6 +85,8 @@ export default function Everything({sortby,search}:EverythingProps) {
       </div>
     );
   }
+
+  console.log(totalResults);
 
   return <NewsGrid articles={uiArticles} loading={loading} />;
 }

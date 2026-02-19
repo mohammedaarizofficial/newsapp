@@ -2,7 +2,13 @@ import { useEffect, useState,useRef } from "react";
 import { NewsGrid } from "@/components/NewsGrid";
 import type {  News } from "@/data/news";
 
-export default function Topheadlines({filterby}:{filterby:string}) {
+interface topHeadlinesProps{
+  filterby:string,
+  page:number,
+  setTotalPages:React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function Topheadlines({filterby,page,setTotalPages}:topHeadlinesProps) {
   const [news, setNews] = useState<News[]>([]);
   const [loading, setLoading] = useState(true);
   type CacheEntry<T> = {
@@ -11,18 +17,20 @@ export default function Topheadlines({filterby}:{filterby:string}) {
   }
   const cache = useRef<Record<string, CacheEntry<News[]>>>({});
   const cacheTime = 5 * 60 * 1000;
+  const cacheKey = `${filterby}::${page} || "__default__"`;
 
   const isCacheValid = (entry:CacheEntry<News[]>)=>{
     return Date.now() - entry.timestamp < cacheTime;
   }
 
   useEffect(() => {
+    window.scrollTo(0,0);
     const fetchTopHeadlines = async()=>{
       //Cache logic written here
-      const cached = cache.current[filterby];
+      const cached = cache.current[cacheKey];
       if(cached && isCacheValid(cached)){
         console.log("✅ CACHE HIT", {
-          filterby,
+          cacheKey,
           age: Date.now() - cached.timestamp,
         });
         setNews(cached.data);
@@ -32,12 +40,13 @@ export default function Topheadlines({filterby}:{filterby:string}) {
 
       try{
         console.log('Fetching data from api');
-        const response = await fetch(`http://localhost:3000/news/topheadlines?q=${filterby}`)
+        const response = await fetch(`http://localhost:3000/news/topheadlines?q=${filterby}&page=${page}`)
         const data = await response.json();
-        setNews(data);
+        setNews(data.articles);
         setLoading(false);
-        cache.current[filterby] = {
-          data,
+        setTotalPages(data.totalPages);
+        cache.current[cacheKey] = {
+          data:data.articles,
           timestamp:Date.now()
         }
       }catch(error){
@@ -46,7 +55,7 @@ export default function Topheadlines({filterby}:{filterby:string}) {
     }
     fetchTopHeadlines();
 
-  },[filterby]);
+  },[filterby,page]);
 
 
   const articles = news.map((a) => ({
