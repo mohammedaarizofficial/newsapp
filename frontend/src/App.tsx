@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { SortDropdown } from "@/components/SortDropDown";
@@ -15,6 +15,10 @@ const App = () => {
   const [sortBy, setSortBy] = useState("relevancy");
   const[searchQuery, setSearchQuery] = useState<string>('');
   const [input, setInput] = useState('');
+
+  useEffect(()=>{
+    setPage(1);
+  },[activeTab, selectedCategory, sortBy, searchQuery])
 
   return (
     <div className="min-h-screen bg-background">
