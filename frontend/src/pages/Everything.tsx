@@ -16,6 +16,30 @@ export default function Everything({sortby,search,page,setTotalPages}:Everything
   const APIKEY = import.meta.env.VITE_API_BASE_URL;
   const [totalResults, setTotalResults] =useState<number>(0);
   const [spinnerLoading, setSpinnerLoading]=useState<boolean>(true);
+  const fetchWithRetry = async (
+    url:string, 
+    retries=5,
+    delay=2000
+  ):Promise<Response> => {
+    for(let attempts = 0; attempts < retries; attempts++){
+      try{
+        const response = await fetch(url);
+
+        if(!response.ok && response.status >= 500){
+          throw new Error("Server is not ready");
+        }
+
+        return response;
+      }catch(error){
+        if(attempts==retries-1){
+          throw error
+        }
+
+        await new Promise(res=>setTimeout(res,delay));
+      }
+    }
+    throw new Error("Failed all retries");
+  }
 
   type cacheEntry<T> = {
     data:T,
@@ -49,7 +73,7 @@ export default function Everything({sortby,search,page,setTotalPages}:Everything
         const url = `${APIKEY}/news/everything?page=${page}&pageSize=12&sort=${sortby}&search=${query}`;
 
         console.log('the api is being fetched');
-        const response = await fetch(url);
+        const response = await fetchWithRetry(url);
 
         if(!response.ok){
           throw new Error('Unable to fetch news!');
@@ -68,7 +92,7 @@ export default function Everything({sortby,search,page,setTotalPages}:Everything
         console.log(error);
         setError("Failed to fetch news!");
       }finally{
-        setTimeout(()=>{setSpinnerLoading(false)},800);
+        setSpinnerLoading(false);
       }
    
     }
