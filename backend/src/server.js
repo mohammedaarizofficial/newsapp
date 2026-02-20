@@ -60,7 +60,7 @@ app.get('/news/topheadlines',async (req,res)=>{
 
 app.get('/news/everything',async(req,res)=>{
     try{
-        const sort = req.query.sort || 'relevancy';
+        const sort = req.query.sort || 'publishedAt';
         const search = req.query.search || 'general';
         const page = parseInt(req.query.page) || 1;
         const response = await fetch(`https://newsapi.org/v2/everything?q=${search}&page=${page}&pageSize=12&sortBy=${sort}&apiKey=${apikey}`);

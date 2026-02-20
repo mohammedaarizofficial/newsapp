@@ -10,7 +10,7 @@ interface topHeadlinesProps{
 
 export default function Topheadlines({filterby,page,setTotalPages}:topHeadlinesProps) {
   const [news, setNews] = useState<News[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [spinnerLoading, setSpinnerLoading]=useState<boolean>(true);
   type CacheEntry<T> = {
     data:T;
     timestamp:number
@@ -34,7 +34,7 @@ export default function Topheadlines({filterby,page,setTotalPages}:topHeadlinesP
           age: Date.now() - cached.timestamp,
         });
         setNews(cached.data);
-        setLoading(false);
+        setSpinnerLoading(false);
         return;
       }
 
@@ -43,7 +43,6 @@ export default function Topheadlines({filterby,page,setTotalPages}:topHeadlinesP
         const response = await fetch(`http://localhost:3000/news/topheadlines?q=${filterby}&page=${page}`)
         const data = await response.json();
         setNews(data.articles);
-        setLoading(false);
         setTotalPages(data.totalPages);
         cache.current[cacheKey] = {
           data:data.articles,
@@ -51,6 +50,8 @@ export default function Topheadlines({filterby,page,setTotalPages}:topHeadlinesP
         }
       }catch(error){
         console.log(error);
+      }finally{
+        setTimeout(()=>{setSpinnerLoading(false)},800);
       }
     }
     fetchTopHeadlines();
@@ -69,5 +70,5 @@ export default function Topheadlines({filterby,page,setTotalPages}:topHeadlinesP
     category: filterby,
   }));
 
-  return <NewsGrid articles={articles} loading={loading} />;
+  return <NewsGrid articles={articles} spinnerLoading={spinnerLoading}/>;
 }

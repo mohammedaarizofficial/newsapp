@@ -7,13 +7,14 @@ interface EverythingProps{
   search:string;
   page:number;
   setTotalPages:React.Dispatch<React.SetStateAction<number>>;
+
 }
 
 export default function Everything({sortby,search,page,setTotalPages}:EverythingProps) {
   const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [totalResults, setTotalResults] =useState<number>(0);
+  const [spinnerLoading, setSpinnerLoading]=useState<boolean>(true);
 
   type cacheEntry<T> = {
     data:T,
@@ -35,6 +36,7 @@ export default function Everything({sortby,search,page,setTotalPages}:Everything
       if(cached && isCacheValid(cached)){
         console.log('cache hit');
         setArticles(cached.data);
+        setSpinnerLoading(false);
         return;
       }
 
@@ -60,7 +62,7 @@ export default function Everything({sortby,search,page,setTotalPages}:Everything
         console.log(error);
         setError("Failed to fetch news!");
       }finally{
-        setLoading(false);
+        setTimeout(()=>{setSpinnerLoading(false)},800);
       }
    
     }
@@ -88,5 +90,5 @@ export default function Everything({sortby,search,page,setTotalPages}:Everything
 
   console.log(totalResults);
 
-  return <NewsGrid articles={uiArticles} loading={loading} />;
+  return <NewsGrid articles={uiArticles} spinnerLoading={spinnerLoading}/>;
 }
