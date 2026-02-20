@@ -9,14 +9,16 @@ import { Input } from "@/components/ui/input";
 import { Flame, Globe,Search } from "lucide-react";
 import Footer from '@/components/Footer'
 
+
 const App = () => {
   const [activeTab, setActiveTab] =useState<"headlines" | "everything">("everything");
   const [selectedCategory, setSelectedCategory] = useState<string>("general");
-  const [sortBy, setSortBy] = useState("relevancy");
+  const [sortBy, setSortBy] = useState("publishedAt");
   const[searchQuery, setSearchQuery] = useState<string>('');
   const [input, setInput] = useState('');
   const [page, setPage]=useState<number>(1);
   const [totalPages, setTotalPages]=useState<number>(1);
+
 
   useEffect(()=>{
     setPage(1);
@@ -24,10 +26,10 @@ const App = () => {
 
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 flex-1 flex flex-col">
         {/* HERO */}
         <div className="mb-8 text-center">
           <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
@@ -95,32 +97,34 @@ const App = () => {
 
           {/* 🔥 PAGES ARE MOUNTED HERE */}
           <TabsContent value="headlines">
-            <Topheadlines filterby={selectedCategory} page={page} setTotalPages={setTotalPages}/>
+            <Topheadlines filterby={selectedCategory} page={page} setTotalPages={setTotalPages} />
           </TabsContent>
 
           <TabsContent value="everything">
-            <Everything sortby={sortBy} search={searchQuery} page={page} setTotalPages={setTotalPages}/>
+            <Everything sortby={sortBy} search={searchQuery} page={page} setTotalPages={setTotalPages} />
           </TabsContent>
         </Tabs>
         
       </main>
-      <div className="container mx-auto px-4 text-center">
-      <div className="flex justify-center border-t border-white/10 px-4 py-3 sm:px-6">
-          <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+      <div className="container mx-auto px-4">
+      <div className="flex justify-center border-t border-white/10 px-4 py-3">
+          <div className="inline-flex items-center gap-4 rounded-md">
             <div>
               <nav aria-label="Pagination" className="isolate inline-flex -space-x-px rounded-md">
                 <button  className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-700 hover:bg-white/5 focus:z-20 focus:outline-offset-0"
                 onClick={()=>setPage(prev=>prev-1)}
-                disabled={page==1}>
+                disabled={page==1} disabled:opacity-40 disabled:cursor-not-allowed>
                   <span className="sr-only">Previous</span>
                   <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" className="size-5">
                     <path d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" fill-rule="evenodd" />
                   </svg>
                 </button>
-                <h5  aria-current="page" className="relative z-10 inline-flex items-center bg-indigo-500 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">{page} out of {totalPages}</h5>
+                <h5  aria-current="page" className="relative z-10 inline-flex items-center  bg-accent text-accent-foreground px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">{page} out of {totalPages}</h5>
                 <button  
                 onClick={()=>setPage(prev=>prev+1)}
                 disabled={page>=totalPages}
+                disabled:opacity-40
+                disabled:cursor-not-allowed
                 className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 inset-ring inset-ring-gray-700 hover:bg-white/5 focus:z-20 focus:outline-offset-0">
                   <span className="sr-only">Next</span>
                   <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true" className="size-5">
@@ -132,6 +136,7 @@ const App = () => {
           </div>
         </div>
         </div>
+
       <Footer />
     </div>
   );

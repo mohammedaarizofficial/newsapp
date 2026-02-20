@@ -1,4 +1,5 @@
 import { NewsCard } from "./NewsCard";
+import Loader from "./Loader";
 
 interface NewsArticle {
   id: string;
@@ -13,28 +14,14 @@ interface NewsArticle {
 
 interface NewsGridProps {
   articles: NewsArticle[];
-  loading?: boolean;
+  spinnerLoading:boolean;
 }
 
-export const NewsGrid = ({ articles, loading }: NewsGridProps) => {
-  if (loading) {
-    return (
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div
-            key={i}
-            className="animate-pulse overflow-hidden rounded-lg bg-card shadow-card"
-          >
-            <div className="h-48 bg-muted" />
-            <div className="p-4 space-y-3">
-              <div className="h-4 w-3/4 rounded bg-muted" />
-              <div className="h-3 w-full rounded bg-muted" />
-              <div className="h-3 w-2/3 rounded bg-muted" />
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+export const NewsGrid = ({ articles,spinnerLoading }: NewsGridProps) => {
+  if(spinnerLoading){
+    return(
+      <Loader />
+    )
   }
 
   if (articles.length === 0) {
